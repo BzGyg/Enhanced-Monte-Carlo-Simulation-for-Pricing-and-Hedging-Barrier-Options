@@ -9,7 +9,6 @@ Our experiments use vanilla option data based on SPY US Equity from [Bloomberg](
 ## Technical Details
 
 - **`mf796_Grp08_report.pdf`**: Project report.
-- **`Simulation.ipynb`**: Code for experiments.
 
 ## Data
 
@@ -24,6 +23,8 @@ Our experiments use vanilla option data based on SPY US Equity from [Bloomberg](
 - **`SPY.xlsx`**: SPY index.
 
 ## Results
+
+- **`Simulation.ipynb`**: Code for experiments.
 
 ### Pricing Accuracy
 **Strike: 505 | Initial Asset Price: 503.49**
