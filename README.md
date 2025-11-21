@@ -24,7 +24,7 @@ Our experiments use vanilla option data based on SPY US Equity from [Bloomberg](
 
 ## Results
 
-- **`Simulation.ipynb`**: Code for experiments.
+**`Simulation.ipynb`**: Code for experiments.
 
 ### Pricing Accuracy
 **Strike: 505 | Initial Asset Price: 503.49**
