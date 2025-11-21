@@ -8,7 +8,7 @@ Our experiments use vanilla option data based on SPY US Equity from [Bloomberg](
 
 ## Technical Details
 
-- **`mf796_Grp08_report.pdf`**: Project report.
+**`mf796_Grp08_report.pdf`**: Project report.
 
 ## Data
 
