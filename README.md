@@ -10,6 +10,28 @@ Our experiments use vanilla option data based on SPY US Equity from [Bloomberg](
 
 **`mf796_Grp08_report.pdf`**: Project report.
 
+### Barrier Hitting Probability (Reflection Principle)
+The probability of hitting barrier $B$ between two adjacent time steps:
+
+$$p(t_i \leq \tau_B \leq t_{i+1}|S(t_i), S(t_{i+1})) = \exp\left(-\frac{2(\ln(S(t_{i+1})) - \ln(B))(\ln(S(t_i)) - \ln(B))}{\sigma^2\Delta t}\right)$$
+
+### Corrected Barrier Option Pricing
+**Knock-In:**
+$$V_{knock-in}(t) = e^{-(T-t)r}E\left(V_{vanilla} \cdot P\{\tau_B \leq T|S(t_0), S(t_1)...S(t_N)\}\right)$$
+
+**Knock-Out:**
+$$V_{knock-out}(t) = e^{-(T-t)r}E\left(V_{vanilla} \cdot P\{\tau_B > T|S(t_0), S(t_1)...S(t_N)\}\right)$$
+
+where the hitting probability is computed as:
+$$P\{\tau_B \leq T|S(t_0), S(t_1)...S(t_N)\} = 1 - \prod_{i=0}^{N-1}\left(1 - p(t_i \leq \tau_B \leq t_{i+1}|S(t_i), S(t_{i+1}))\right)$$
+
+### Smoothing Function for Delta Calculation
+To handle the non-differentiability of the Heaviside function:
+
+$$H_\epsilon(x) = \frac{\tanh\left(\frac{x}{\epsilon}\right) + 1}{2}$$
+
+where smaller $\epsilon$ provides closer approximation to $H(x)$.
+
 ## Data
 
 ### Pricing Experiments
