@@ -10,6 +10,8 @@ Our experiments use vanilla option data based on SPY US Equity from [Bloomberg](
 
 **`mf796_Grp08_report.pdf`**: Project report.
 
+## Key Formulas
+
 ### Barrier Hitting Probability (Reflection Principle)
 The probability of hitting barrier $B$ between two adjacent time steps:
 
