@@ -25,7 +25,7 @@ $$V_{knock-in}(t) = e^{-(T-t)r}E\left(V_{vanilla} \cdot P\{\tau_B \leq T|S(t_0),
 $$V_{knock-out}(t) = e^{-(T-t)r}E\left(V_{vanilla} \cdot P\{\tau_B > T|S(t_0), S(t_1)...S(t_N)\}\right)$$
 
 where the hitting probability is computed as:
-$$P\{\tau_B \leq T|S(t_0), S(t_1)...S(t_N)\} = 1 - \prod_{i=0}^{N-1}\left(1 - p(t_i \leq \tau_B \leq t_{i+1}|S(t_i), S(t_{i+1}))\right)$$
+$$P\({\tau_B \leq T|S(t_0), S(t_1)...S(t_N)\}) = 1 - \prod_{i=0}^{N-1}\left(1 - p(t_i \leq \tau_B \leq t_{i+1}|S(t_i), S(t_{i+1}))\right)$$
 
 ### Smoothing Function for Delta Calculation
 To handle the non-differentiability of the Heaviside function:
