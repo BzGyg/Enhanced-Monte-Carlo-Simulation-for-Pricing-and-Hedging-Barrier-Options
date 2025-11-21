@@ -8,17 +8,17 @@ Our experiments use vanilla option data based on SPY US Equity from [Bloomberg](
 
 ## Technical Details
 
-- **`mf796_Grp08_report.pdf`**: Project Report.
-- **`Simulation.ipynb`**: Code for Experiments.
+- **`mf796_Grp08_report.pdf`**: Project report.
+- **`Simulation.ipynb`**: Code for experiments.
 
 ## Data
 
 ### Pricing Experiments
-- **`cdatas.csv` & `pdatas.csv`**: Call & Put prices of vanilla options with multiple strikes and tenors.
-- **`call_data.py` & `put_data.py`**: Data extractors of the above 2.
+- **`cdatas.csv`** & **`pdatas.csv`**: Call & Put prices of vanilla options with multiple strikes and tenors.
+- **`call_data.py`** & **`put_data.py`**: Data extractors of the above 2.
 - **`spy_call_put.xlsx`**: Call & Put prices of vanilla options with strike 505.
 
 ### Hedging Experiments
-- **`cdatas_sen.csv` & `pdatas_sen.csv`**: Call & Put prices of vanilla options with various strike price of 512 and multiple tenors.
-- **`call_data_sen.py` & `put_data_sen.py`**: Data extractors of the above 2.
+- **`cdatas_sen.csv`** & **`pdatas_sen.csv`**: Call & Put prices of vanilla options with various strike price of 512 and multiple tenors.
+- **`call_data_sen.py`** & **`put_data_sen.py`**: Data extractors of the above 2.
 - **`SPY.xlsx`**: SPY index.
