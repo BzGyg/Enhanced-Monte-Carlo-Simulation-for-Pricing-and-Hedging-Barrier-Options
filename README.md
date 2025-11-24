@@ -110,7 +110,7 @@ $$\Delta_\epsilon = e^{-rT} \int_0^1 \int_0^1 \frac{d\left(H_\epsilon(S_{min} - 
 For any barrier $B$:
 $$V_{vanilla} = V_{knock-in}(B) + V_{knock-out}(B)$$
 
-This identity is used to validate pricing accuracy by comparing the sum of knock-in and knock-out prices against the known vanilla option price.
+This identity provides an internal consistency check. Since $V_{vanilla}$ is obtained from market prices (not simulated), the error measures the absolute accuracy of our Monte Carlo method.
 
 ## Data
 
