@@ -110,7 +110,9 @@ $$\Delta_\epsilon = e^{-rT} \int_0^1 \int_0^1 \frac{d\left(H_\epsilon(S_{min} - 
 For any barrier $B$:
 $$V_{vanilla} = V_{knock-in}(B) + V_{knock-out}(B)$$
 
-This identity provides an internal consistency check. Since $V_{vanilla}$ is obtained from market prices (not simulated), the error measures the absolute accuracy of our Monte Carlo method.
+This identity provides an internal consistency check. Since barrier options are exotic derivatives without publicly available market prices, we cannot directly verify our simulated prices. However, since $V_{vanilla}$ is obtained from market prices (not simulated), comparing $V_{knock-in} + V_{knock-out}$ against $V_{vanilla}$ measures the absolute accuracy of our Monte Carlo method.
+
+Our experiments use near-ATM options for three reasons: (1) ATM market quotes are most liquid and reliable, (2) both knock-in and knock-out components carry non-trivial weight, making the decomposition informative, and (3) payoffs are less heavy-tailed, reducing Monte Carlo variance.
 
 ## Data
 
