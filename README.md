@@ -6,33 +6,111 @@ This project implements an enhanced Monte Carlo simulation framework for pricing
 
 Our experiments use vanilla option data based on SPY US Equity from [Bloomberg](https://www.bloomberg.com/professional/products/bloomberg-terminal/) (starting April 16, 2024), with an initial asset price of 503.49 and strike price of 505. We test pricing accuracy across multiple tenors ranging from 3 to 136 days and various barrier levels, verifying that knock-in and knock-out prices sum to the vanilla option price. For Delta hedging experiments, we use actual SPY price movements with strike price of 512, comparing hedging errors between our enhanced method and crude Monte Carlo approximations across different barrier configurations.  
 
-## Technical Details
-
 **`mf796_Grp08_report.pdf`**: Project report.
 
 ## Key Formulas
 
+### Notation
+
+| Symbol | Description |
+|--------|-------------|
+| $S(t)$ | Asset price at time $t$ |
+| $B$ | Barrier level |
+| $K$ | Strike price |
+| $\sigma$ | Implied volatility |
+| $r$ | Risk-free interest rate |
+| $q$ | Dividend yield |
+| $T$ | Time to expiration |
+| $\Delta t$ | Time step size |
+| $\tau_B$ | First hitting time of barrier $B$ |
+| $N$ | Total number of simulation steps |
+
+### Log-Space Transformation
+
+For computational convenience, we work in log-space:
+$$Z(t) = \ln(S(t)), \quad b = \ln(B)$$
+
+The log-price follows:
+$$dZ(t) = \left(\mu - q - \frac{\sigma^2}{2}\right)dt + \sigma dW(t)$$
+
+---
+
 ### Barrier Hitting Probability (Reflection Principle)
-The probability of hitting barrier $B$ between two adjacent time steps:
+
+The probability of hitting barrier $B$ between two adjacent time steps, given endpoints:
 
 $$p(t_i \leq \tau_B \leq t_{i+1}|S(t_i), S(t_{i+1})) = \exp\left(-\frac{2(\ln(S(t_{i+1})) - \ln(B))(\ln(S(t_i)) - \ln(B))}{\sigma^2\Delta t}\right)$$
 
+> **Note:** This formula is derived from the reflection principle of Brownian motion. Values exceeding 1 should be capped at 1.
+
+---
+
 ### Corrected Barrier Option Pricing
-**Knock-In:**
-$$V_{knock-in}(t) = e^{-(T-t)r}E\left(V_{vanilla} \cdot P\{\tau_B \leq T|S(t_0), S(t_1)...S(t_N)\}\right)$$
 
-**Knock-Out:**
-$$V_{knock-out}(t) = e^{-(T-t)r}E\left(V_{vanilla} \cdot P\{\tau_B > T|S(t_0), S(t_1)...S(t_N)\}\right)$$
+The probability that the barrier is **not** hit during the entire simulation:
 
-where the hitting probability is computed as:
-$$P\({\tau_B \leq T|S(t_0), S(t_1)...S(t_N)\}) = 1 - \prod_{i=0}^{N-1}\left(1 - p(t_i \leq \tau_B \leq t_{i+1}|S(t_i), S(t_{i+1}))\right)$$
+$$P\{\tau_B > T|S(t_0), S(t_1)...S(t_N)\} = \prod_{i=0}^{N-1}\left(1 - p(t_i \leq \tau_B \leq t_{i+1}|S(t_i), S(t_{i+1}))\right)^+$$
 
-### Smoothing Function for Delta Calculation
-To handle the non-differentiability of the Heaviside function:
+where $(x)^+ = \max(x, 0)$.
 
+**Knock-Out Option:**
+$$V_{knock-out}(t) = e^{-(T-t)r}\mathbb{E}\left[V_{vanilla} \cdot P\{\tau_B > T|S(t_0), S(t_1)...S(t_N)\}\right]$$
+
+**Knock-In Option:**
+$$V_{knock-in}(t) = e^{-(T-t)r}\mathbb{E}\left[V_{vanilla} \cdot P\{\tau_B \leq T|S(t_0), S(t_1)...S(t_N)\}\right]$$
+
+where:
+$$P\{\tau_B \leq T|S(t_0), S(t_1)...S(t_N)\} = 1 - P\{\tau_B > T|S(t_0), S(t_1)...S(t_N)\}$$
+
+---
+
+### Delta Calculation with Smoothing
+
+#### The Problem
+The payoff of a down-and-out call option involves indicator functions:
+$$V(0) = e^{-rT}\mathbb{E}\left[H(S_{min} - B) \cdot R(S(T) - K)\right]$$
+
+where $S_{min}$ is the path minimum, $H(x)$ is the Heaviside function, and $R(x) = \max(x, 0)$ is the ramp function.
+
+Since $H(x)$ is non-differentiable at $x=0$, we cannot directly compute $\Delta = \frac{\partial V}{\partial S(0)}$.
+
+#### Smoothing Functions
+
+**Smoothed Heaviside:**
 $$H_\epsilon(x) = \frac{\tanh\left(\frac{x}{\epsilon}\right) + 1}{2}$$
 
-where smaller $\epsilon$ provides closer approximation to $H(x)$.
+**Smoothed Ramp:**
+$$R_\epsilon(x) = \int_{-\infty}^{x} H_\epsilon(u) \, du$$
+
+As $\epsilon \to 0$, these converge to the true indicator and ramp functions.
+
+#### Sampling the Path Minimum
+
+Using the reflection principle, we can sample $S_{min}$ directly without simulating the full path:
+
+$$S_{min} = \exp\left(\frac{1}{2}\left(\ln S(0) + \ln S(T) - \sqrt{(\ln S(0) - \ln S(T))^2 - 2\sigma^2 T \ln(U_1)}\right)\right)$$
+
+where $U_1 \sim \text{Uniform}(0, 1)$.
+
+The terminal price is sampled as:
+$$S(T) = S(0) \exp\left(\left(\mu - q - \frac{\sigma^2}{2}\right)T + \sigma\sqrt{T}\Phi^{-1}(U_2)\right)$$
+
+where $U_2 \sim \text{Uniform}(0, 1)$ and $\Phi^{-1}$ is the inverse standard normal CDF.
+
+#### Smoothed Delta
+
+$$\Delta_\epsilon = e^{-rT} \int_0^1 \int_0^1 \frac{d\left(H_\epsilon(S_{min} - B) \cdot R_\epsilon(S(T) - K)\right)}{dS(0)} \, dU_1 \, dU_2$$
+
+> **Constraint:** Ensure $(\ln S(0) - \ln S(T))^2 - 2\sigma^2 T \ln(U_1) > 0$ during sampling.
+
+---
+
+### Verification Identity
+
+For any barrier $B$:
+$$V_{vanilla} = V_{knock-in}(B) + V_{knock-out}(B)$$
+
+This identity is used to validate pricing accuracy by comparing the sum of knock-in and knock-out prices against the known vanilla option price.
 
 ## Data
 
@@ -89,3 +167,7 @@ Absolute hedging errors comparing crude and corrected Delta methods:
 |         | Out  | 0.000      | 0.000          | 1.020     | 1.020         | No           |
 
 The enhanced Delta hedge demonstrates superior performance, especially for call options and knock-out scenarios.
+
+## References
+- Papatheodorou, B. (2005). Enhanced Monte Carlo Methods for Pricing and Hedging Exotic Options. University of Oxford.
+- Shreve, S. (2000). Stochastic Calculus for Finance II. Springer.
