@@ -49,7 +49,7 @@ $$p(t_i \leq \tau_B \leq t_{i+1}|S(t_i), S(t_{i+1})) = \exp\left(-\frac{2(\ln(S(
 
 The probability that the barrier is **not** hit during the entire simulation:
 
-$$P\{\tau_B > T|S(t_0), S(t_1)...S(t_N)\} = \prod_{i=0}^{N-1}\left(1 - p(t_i \leq \tau_B \leq t_{i+1}|S(t_i), S(t_{i+1}))\right)^+$$
+$$P(\{\tau_B > T|S(t_0), S(t_1)...S(t_N)\}) = \prod_{i=0}^{N-1}\left(1 - p(t_i \leq \tau_B \leq t_{i+1}|S(t_i), S(t_{i+1}))\right)^+$$
 
 where $(x)^+ = \max(x, 0)$.
 
