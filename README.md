@@ -60,7 +60,7 @@ $$V_{knock-out}(t) = e^{-(T-t)r}\mathbb{E}\left[V_{vanilla} \cdot P\{\tau_B > T|
 $$V_{knock-in}(t) = e^{-(T-t)r}\mathbb{E}\left[V_{vanilla} \cdot P\{\tau_B \leq T|S(t_0), S(t_1)...S(t_N)\}\right]$$
 
 where:
-$$P\{\tau_B \leq T|S(t_0), S(t_1)...S(t_N)\} = 1 - P\{\tau_B > T|S(t_0), S(t_1)...S(t_N)\}$$
+$$P(\{\tau_B \leq T|S(t_0), S(t_1)...S(t_N)\}) = 1 - P\{\tau_B > T|S(t_0), S(t_1)...S(t_N)\}$$
 
 ---
 
