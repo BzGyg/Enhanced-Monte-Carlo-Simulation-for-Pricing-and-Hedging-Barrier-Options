@@ -108,7 +108,9 @@ $$\Delta_\epsilon = e^{-rT} \int_0^1 \int_0^1 \frac{d\left(H_\epsilon(S_{min} - 
 ### Verification Identity
 
 For any barrier $B$:
-$$V_{vanilla} = V_{knock-in}(B) + V_{knock-out}(B)$$
+```math
+V_{vanilla} = V_{knock-in}(B) + V_{knock-out}(B)
+```
 
 This identity provides an internal consistency check. Since barrier options are exotic derivatives without publicly available market prices, we cannot directly verify our simulated prices. However, since $V_{vanilla}$ is obtained from market prices (not simulated), comparing $V_{knock-in} + V_{knock-out}$ against $V_{vanilla}$ measures the absolute accuracy of our Monte Carlo method.
 
