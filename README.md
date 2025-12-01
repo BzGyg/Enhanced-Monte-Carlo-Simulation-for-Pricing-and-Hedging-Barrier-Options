@@ -4,7 +4,9 @@
 
 This project implements an enhanced Monte Carlo simulation framework for pricing and hedging barrier options with improved accuracy. We address the discretization bias inherent in standard Monte Carlo methods by applying the reflection principle to estimate barrier-crossing probabilities between simulation steps. Additionally, we employ smoothing techniques to calculate option Delta for effective hedging strategies.
 
-Our experiments use vanilla option data based on SPY US Equity from [Bloomberg](https://www.bloomberg.com/professional/products/bloomberg-terminal/) (starting April 16, 2024), with an initial asset price of 503.49 and strike price of 505. We test pricing accuracy across multiple tenors ranging from 3 to 136 days and various barrier levels, verifying that knock-in and knock-out prices sum to the vanilla option price. For Delta hedging experiments, we use actual SPY price movements with strike price of 512, comparing hedging errors between our enhanced method and crude Monte Carlo approximations across different barrier configurations.  
+Our experiments use vanilla option data based on SPY US Equity from [Bloomberg](https://www.bloomberg.com/professional/products/bloomberg-terminal/) (starting April 16, 2024), with an initial asset price of 503.49 and strike price of 505. We test pricing accuracy across multiple tenors ranging from 3 to 136 days and various barrier levels, verifying that knock-in and knock-out prices sum to the vanilla option price. For Delta hedging experiments, we use actual SPY price movements with strike price of 512, comparing hedging errors between our enhanced method and crude Monte Carlo approximations across different barrier configurations.
+
+> **Note:** Since barrier options are exotic derivatives without publicly available market prices, we cannot directly verify our simulated prices. However, since $V_{vanilla}$ is obtained from market prices (not simulated), comparing $V_{knock-in} + V_{knock-out}$ against $V_{vanilla}$ measures the absolute accuracy of our Monte Carlo method.
 
 **`mf796_Grp08_report.pdf`**: Project report.
 
